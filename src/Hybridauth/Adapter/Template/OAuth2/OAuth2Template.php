@@ -274,7 +274,7 @@ class OAuth2Template extends AbstractAdapter implements AdapterInterface
 
 		switch( $method ){
 			case 'GET'  : $this->httpClient->get ( $uri, $parameters ); break;
-			case 'POST' : $this->httpClient->post( $uri, $parameters ); break;
+			case 'POST' : $this->httpClient->post( $uri, http_build_query($parameters) ); break;
 		}
 
 		return $this->httpClient->getResponseBody();

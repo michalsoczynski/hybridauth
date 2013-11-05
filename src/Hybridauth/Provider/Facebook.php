@@ -32,8 +32,8 @@ class Facebook extends OAuth2Template
 		$this->letApplicationId( $this->getAdapterConfig( 'keys', 'id' ) );
 		$this->letApplicationSecret( $this->getAdapterConfig( 'keys', 'secret' ) );
 
-		$scope = $this->getAdapterConfig( 'scope' ) 
-			? $this->getAdapterConfig( 'scope' ) 
+		$scope = $this->getAdapterConfig( 'scope' )
+			? $this->getAdapterConfig( 'scope' )
 			: 'email,user_about_me,user_birthday,user_hometown,user_website,read_stream,offline_access,publish_stream,read_friendlists';
 
 		$this->letApplicationScope( $scope );
@@ -81,7 +81,7 @@ class Facebook extends OAuth2Template
 		$profile->setIdentifier ( $parser( 'id'         ) );
 		$profile->setFirstName  ( $parser( 'first_name' ) );
 		$profile->setLastName   ( $parser( 'last_name'  ) );
-		$profile->setDisplayName( $parser( 'name'       ) ); 
+		$profile->setDisplayName( $parser( 'name'       ) );
 		$profile->setProfileURL ( $parser( 'link'       ) );
 		$profile->setWebSiteURL ( $parser( 'website'    ) );
 		$profile->setGender     ( $parser( 'gender'     ) );
@@ -92,7 +92,7 @@ class Facebook extends OAuth2Template
 
 		if( $parser( 'birthday' ) ){
 			list ( $m, $d, $y ) = explode ( "/", $parser( 'birthday' ) );
-			
+
 			$profile->setBirthDay  ( $d );
 			$profile->setBirthMonth( $m );
 			$profile->setBirthYear ( $y );
@@ -142,7 +142,7 @@ class Facebook extends OAuth2Template
 				$uc = new Profile();
 
 				$profile->setIdentifier ( $parser( 'id'   ) );
-				$profile->setDisplayName( $parser( 'name' ) ); 
+				$profile->setDisplayName( $parser( 'name' ) );
 				$profile->setProfileURL ( 'https://www.facebook.com/profile.php?id=' . $profile->getIdentifier() );
 				$profile->setPhotoURL   ( 'https://graph.facebook.com/' . $profile->getIdentifier() . '/picture?width=150&height=150' );
 
@@ -166,6 +166,19 @@ class Facebook extends OAuth2Template
 	*/
 	function setUserStatus( $status )
 	{
-		throw new Exception( "Unsupported", Exception::UNSUPPORTED_FEATURE, null, $this );
+		$config = $this->getHybridauthConfig();
+		$keys = $config['providers']['Facebook']['keys'];
+
+		$response = $this->signedRequest(
+			'/' . $this->getUserProfile()->getIdentifier() . '/feed',
+			'POST',
+			array(
+				'message' 		=> $status,
+				'client_id'     => $this->getApplicationId(),
+				'client_secret' => $this->getApplicationSecret(),
+				'redirect_uri'  => $this->getEndpointRedirectUri(),
+			)
+		);
+		return json_decode( $response );
  	}
 }
