@@ -20,10 +20,10 @@ class Request
 		if( empty( $uri ) ){
 			return false;
 		}
-
 		if (is_string($headers)) {
 			$headers = array($headers);
 		}
+
 
 		$response = new Response();
 

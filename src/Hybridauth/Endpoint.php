@@ -82,7 +82,6 @@ final class Endpoint
 
 			$this->request = $_REQUEST;
 		}
-
 		if( isset( $this->request["hauth_start"] ) ){
 			$this->processAdapterLoginBegin();
 		}
@@ -110,7 +109,7 @@ final class Endpoint
 			die( "Invalid parameter! Please return to the login page and try again." );
 		}
 
-		try{ 
+		try{
 			$adapter->loginBegin();
 		}
 		catch( Exception $e ){
@@ -141,6 +140,7 @@ final class Endpoint
 			die( "Invalid parameter! Please return to the login page and try again." );
 		}
 
+
 		try{
 			$adapter->loginFinish();
 		}
@@ -148,9 +148,8 @@ final class Endpoint
 			$this->storage->set( "error.status"   , 1 );
 			$this->storage->set( "error.message"  , $e->getMessage() );
 			$this->storage->set( "error.code"     , $e->getCode() );
-			$this->storage->set( "error.exception", $e );
+			// $this->storage->set( "error.exception", $e );
 		}
-
 		$this->_returnToCallbackUrl( $provider_id );
 	}
 
@@ -161,7 +160,7 @@ final class Endpoint
 	*/
 	private function _authInit()
 	{
-		if( ! $this->storage->config( "CONFIG" ) ){ 
+		if( ! $this->storage->config( "CONFIG" ) ){
 			header( "HTTP/1.0 404 Not Found" );
 
 			die( "You cannot access this page directly." );

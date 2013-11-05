@@ -58,7 +58,7 @@ class OAuth2Template extends AbstractAdapter implements AdapterInterface
 	// --------------------------------------------------------------------
 
 	/**
-	* begin login step 
+	* begin login step
 	*/
 	function loginBegin()
 	{
@@ -83,10 +83,11 @@ class OAuth2Template extends AbstractAdapter implements AdapterInterface
 	// --------------------------------------------------------------------
 
 	/**
-	* finish login step 
+	* finish login step
 	*/
 	function loginFinish( $requestAccessTokenParameters = array(), $requestAccessTokenMethod = 'POST' )
 	{
+
 		$code  = ( array_key_exists( 'code' , $_REQUEST ) ) ? $_REQUEST['code']  : "";
 		$error = ( array_key_exists( 'error', $_REQUEST ) ) ? $_REQUEST['error'] : "";
 
@@ -101,7 +102,6 @@ class OAuth2Template extends AbstractAdapter implements AdapterInterface
 		}
 
 		$requestAccessTokenParameters['code'] = $code;
-
 		$this->requestAccessToken( $requestAccessTokenParameters, $requestAccessTokenMethod );
 
 		// store tokens
@@ -144,7 +144,8 @@ class OAuth2Template extends AbstractAdapter implements AdapterInterface
 		$parameters = array_merge( $defaults, (array) $parameters );
 
 		if( $method == 'POST' ){
-			$this->httpClient->post( $this->endpoints->requestTokenUri, $parameters );
+
+			$this->httpClient->post( $this->endpoints->requestTokenUri, http_build_query($parameters) );
 		}
 		else{
 			$this->httpClient->get( $this->endpoints->requestTokenUri, $parameters );
