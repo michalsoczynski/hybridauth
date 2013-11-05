@@ -21,6 +21,10 @@ class Request
 			return false;
 		}
 
+		if (is_string($headers)) {
+			$headers = array($headers);
+		}
+
 		$response = new Response();
 
 		if( $method == 'GET' ){
@@ -39,7 +43,7 @@ class Request
 		$curl_opts = array(
 			CURLOPT_TIMEOUT        => 30,
 			CURLOPT_CONNECTTIMEOUT => 30,
-			CURLOPT_SSL_VERIFYPEER => 0, // its your call now 
+			CURLOPT_SSL_VERIFYPEER => 0, // its your call now
 			CURLOPT_USERAGENT      => "HybridAuth Library http://hybridauth.sourceforge.net/",
 		);
 
@@ -61,8 +65,7 @@ class Request
 
 		if( $method == 'POST' ){
 			curl_setopt( $ch, CURLOPT_POST, 1);
-
-			curl_setopt( $ch, CURLOPT_POSTFIELDS, http_build_query( $args ) );
+			curl_setopt( $ch, CURLOPT_POSTFIELDS, $args );
 		}
 
 		$response->setBody       ( curl_exec( $ch ) );
@@ -73,7 +76,7 @@ class Request
 
 		curl_close ($ch);
 
-		return $response; 
+		return $response;
 	}
 
 	// --------------------------------------------------------------------

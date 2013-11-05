@@ -49,12 +49,12 @@ class Client implements ClientInterface
 
 	function getState()
 	{
-		return 
+		return
 			'Uri: ' . $this->parameters['uri'] .
-			'. Method: ' . $this->parameters['method'] . 
+			'. Method: ' . $this->parameters['method'] .
 			'. Error: ' . $this->getResponseError() .
 			'. Status: ' . $this->getResponseStatus() .
-			'. Response: ' . $this->getResponseBody() 
+			'. Response: ' . $this->getResponseBody()
 		;
 	}
 

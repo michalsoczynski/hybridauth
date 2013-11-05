@@ -71,9 +71,9 @@ class Twitter extends OAuth1Template
 		$profile = new Profile();
 
 		$profile->setIdentifier ( $parser( 'id'                ) );
-		$profile->setFirstName  ( $parser( 'name'              ) ); 
-		$profile->setDisplayName( $parser( 'screen_name'       ) );  
-		$profile->setDescription( $parser( 'description'       ) );  
+		$profile->setFirstName  ( $parser( 'name'              ) );
+		$profile->setDisplayName( $parser( 'screen_name'       ) );
+		$profile->setDescription( $parser( 'description'       ) );
 		$profile->setPhotoURL   ( $parser( 'profile_image_url' ) );
 		$profile->setWebSiteURL ( $parser( 'url'               ) );
 		$profile->setRegion     ( $parser( 'location'          ) );
@@ -86,7 +86,7 @@ class Twitter extends OAuth1Template
 	// --------------------------------------------------------------------
 
 	/**
-	* Returns user contacts list 
+	* Returns user contacts list
 	*/
 	function getUserContacts()
 	{
@@ -98,12 +98,12 @@ class Twitter extends OAuth1Template
 	// --------------------------------------------------------------------
 
 	/**
-	* Updates user status 
+	* Updates user status
 	*/
 	function setUserStatus( $status )
 	{
 		/// ToDo
-
-		throw new Exception( "Unsupported", Exception::UNSUPPORTED_FEATURE, null, $this );
+		$response = $this->signedRequest( 'statuses/update.json', 'POST', array('status' => $status));
+		return json_decode ( $response );
  	}
 }
