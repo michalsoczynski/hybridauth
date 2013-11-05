@@ -164,20 +164,25 @@ class Facebook extends OAuth2Template
 	*
 	*	$data = $hybridauth->authenticate( "Facebook" )->setUserStatus( _PARAMS_ );
 	*/
-	function setUserStatus( $status )
+	function setUserStatus( $status , $picture = null)
 	{
 		$config = $this->getHybridauthConfig();
 		$keys = $config['providers']['Facebook']['keys'];
+		$arr = array(
+			'message' 		=> $status,
+			'client_id'     => $this->getApplicationId(),
+			'client_secret' => $this->getApplicationSecret(),
+			'redirect_uri'  => $this->getEndpointRedirectUri(),
+		);
+
+		if ($picture) {
+			$arr['picture'] = $picture;
+		}
 
 		$response = $this->signedRequest(
 			'/' . $this->getUserProfile()->getIdentifier() . '/feed',
 			'POST',
-			array(
-				'message' 		=> $status,
-				'client_id'     => $this->getApplicationId(),
-				'client_secret' => $this->getApplicationSecret(),
-				'redirect_uri'  => $this->getEndpointRedirectUri(),
-			)
+			$arr
 		);
 		return json_decode( $response );
  	}
