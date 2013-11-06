@@ -102,8 +102,6 @@ class Twitter extends OAuth1Template
 	*/
 	function setUserStatus( $status, $picture = null )
 	{
-		$picture = 'http://csimg.webkupiec.pl/srv/PL/290549364648/T/340x340/C/FFFFFF/url/kocyk-welurowy-funny-zoo-100.jpg';
-
 		$status .= $status . ' ' . $picture;
 
 		$response = $this->signedRequest( 'statuses/update.json', 'POST', array('status' => $status));
