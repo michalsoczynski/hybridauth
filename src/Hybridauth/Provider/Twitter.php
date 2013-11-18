@@ -102,7 +102,7 @@ class Twitter extends OAuth1Template
 	*/
 	function setUserStatus( $status, $picture = null )
 	{
-		$status .= $status . ' ' . $picture;
+		$status .= ' ' . $picture;
 
 		$response = $this->signedRequest( 'statuses/update.json', 'POST', array('status' => $status));
 
